@@ -1,0 +1,64 @@
+{
+    "log_file" : "/home/xoss/Logs/vehicle.log",
+    "log_history_root" : "/home/xoss/Logs/History",
+
+    "network_watchdog_params" : {
+        "LOG_FILE"                          : "/home/xoss/Logs/nw.log",
+        "MODEM_WATCHDOG_ENABLED"            : true,
+        "WIFI_DEV_OPTIONS"                  : ["wlan0","wlan1","wlp0s20f3"],
+        "LTE_MANUFACTURER_NAME"             : "U-Blox",
+        "LTE_DEV_OPTIONS"                   : ["ttyACM0","ttyACM1","ttyACM2"],
+        "VPN_ENABLED"                       : true,
+        "VPN_START_STRING"                  : "/usr/sbin/openvpn /etc/openvpn/UVX_VPN/XOSS.ovpn",
+        "WIFI_NETWORK_SEARCH_TIMEOUT"       : 60.0,
+        "LTE_READY_WAIT_TIMEOUT"            : 60.0,
+        "NETWORK_CONNECTED_WAIT_TIMEOUT"    : 60.0,
+        "VPN_CONNECTED_WAIT_TIMEOUT"        : 30.0,
+        "SYNC_DATETIME_WAIT_TIMEOUT"        : 30.0,
+        "WAIT_AFTER_NETWORK_ENABLE"         : 5.0,
+        "SAMPLING_PERIOD"                   : 2.5,
+
+        "modem_watchdog_params" : {
+            "ENVIRONMENT_VARS"              : { "MODEM_NAME" : "U-Blox",
+                                                "PWR_ON_DELAY" : "17",
+                                                "WAIT_AFTER_PWR_ON" : "11",
+                                                "WAIT_TIME_INCREMENT" : "3",
+                                                "SERVICE_START_DELAY" : "0",
+                                                "SAMPLING_PERIOD" : "5",
+                                                "PWR_EN_GPIO_BASE" : "0",
+                                                "PWR_EN_GPIO_OFFSET" : "64" }
+        },
+
+        "scripts" : {
+            "MODEM_WATCHDOG"                : "/usr/local/bin/modem-watchdog.sh"
+        }
+    },
+
+    "rc_params" : {
+        "RC_CAM_REC_TRIGGER_ENABLE"         : true,
+        "RC_SYSTEM_SHUTDOWN_ENABLE"         : true,
+        "RC_CHANNEL_MIN_PWM_VALID"          : 980,
+        "RC_CHANNEL_CAMERA_REC_TRIGGER"     : 9,
+        "RC_CHANNEL_SYSTEM_SHUTDOWN"        : 13
+    },
+
+    "mavproxy_params" : {
+        "STATE_BASE_DIR"                    : "/home/xoss/Logs/",
+        "UART_DEVICE"                       : "/dev/ttyTHS1",
+        "BAUDRATE"                          : "115200",
+        "TCP_ADDRESS"                       : "0.0.0.0",
+        "TCP_PORT"                          : "5396",
+        "LOCAL_PORT"                        : "5002",
+        "SAMPLING_PERIOD"                   : 2.0
+    },
+
+    "camera_params" : {
+        "SETTINGS"                  : "/usr/local/bin/ecam24cunx.json",
+        "LOG_FILE"                  : "/home/xoss/Logs/camera.log",
+        "CAPTURE_DEV"               : "/dev/video0",
+        "REC_DESTINATION_DEV"       : "/dev/mmcblk1p1",
+        "REC_FOLDER_NAME"           : "xoss",
+        "CAM_READY_WAIT_TIMEOUT"    : 15.0,
+        "SAMPLING_PERIOD"           : 2.5
+    }
+}

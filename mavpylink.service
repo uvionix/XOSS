@@ -1,0 +1,24 @@
+[Unit]
+Description=MavPylink autostart upon system boot
+After=multi-user.target
+Wants=multi-user.target
+After=nv.service
+After=nvpmodel.service
+After=networking.service
+After=network.target
+After=systemd-user-sessions.service
+After=network-online.target
+After=network-manager.service
+
+[Service]
+Type=simple
+ExecStartPre=
+ExecStart=/usr/local/bin/xoss.py
+ExecStartPost=
+ExecStop=
+ExecReload=
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
