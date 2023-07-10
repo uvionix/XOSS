@@ -20,7 +20,7 @@ def system_reboot_exit_handler():
 
 def system_shutdown_exit_handler():
     with open('/dev/kmsg', mode='w') as dmesg:
-        p = subprocess.Popen(["echo","MavPylink: System shutting down..."], stdout=dmesg)
+        p = subprocess.Popen(["echo","System shutting down..."], stdout=dmesg)
         p.communicate()
     
     os.system("(sleep 5; shutdown -h now)")
