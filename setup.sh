@@ -6,6 +6,30 @@
 usr=$(logname)
 
 echo "--------------------------------------------------------------------------------"
+echo "Copying XOSS source files ..."
+echo "--------------------------------------------------------------------------------"
+
+# Copy the XOSS source files to their respective locations
+src_path=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+cd $src_path
+cp ecam24cunx.json /usr/local/bin/
+cp xoss-system-parameters.json /usr/local/bin/
+cp xoss.py /usr/local/bin/
+cp modem-watchdog.sh /usr/local/bin/
+cp mavpylink.service /etc/systemd/system/
+
+if [ ! $? -eq 0 ]
+then
+        # Error occured
+        exit 1
+fi
+
+mkdir -p /home/$usr/uvx
+cp update.sh /home/$usr/uvx/xoss-update.sh
+chown $usr /home/$usr/uvx/xoss-update.sh
+chown $usr /home/$usr/uvx
+
+echo "--------------------------------------------------------------------------------"
 echo "Updating repositories ..."
 echo "--------------------------------------------------------------------------------"
 apt-get update
@@ -130,7 +154,7 @@ then
 fi
 
 echo "--------------------------------------------------------------------------------"
-echo "Copying files ..."
+echo "Copying camera binary files ..."
 echo "--------------------------------------------------------------------------------"
 
 # Copy the camera binary files
@@ -138,18 +162,6 @@ cd /home/$usr/Repos
 sleep 2
 cp Jetson_Nano_Binaries/gst-camera/gst-start-camera /usr/local/bin/
 cp Jetson_Nano_Binaries/gst-camera/libmeshflow.so /usr/lib/aarch64-linux-gnu/tegra/
-
-# Get the current script directory and copy the XOSS source files
-src_path=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
-cd $src_path
-cp ecam24cunx.json /usr/local/bin/
-cp xoss-system-parameters.json /usr/local/bin/
-cp xoss.py /usr/local/bin/
-cp modem-watchdog.sh /usr/local/bin/
-cp mavpylink.service /etc/systemd/system/
-mkdir -p /home/$usr/uvx
-cp update.sh /home/$usr/uvx/xoss-update.sh
-chown $usr /home/$usr/uvx/xoss-update.sh
 
 # Delete created repositories
 echo "Removing downloaded repositories..."
