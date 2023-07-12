@@ -30,13 +30,9 @@ chown $usr /home/$usr/uvx/xoss-update.sh
 chown $usr /home/$usr/uvx
 
 echo "--------------------------------------------------------------------------------"
-echo "Updating repositories ..."
-echo "--------------------------------------------------------------------------------"
-apt-get update
-
-echo "--------------------------------------------------------------------------------"
 echo "Installing git ..."
 echo "--------------------------------------------------------------------------------"
+apt-get update
 sleep 2
 apt-get -y install git
 
@@ -71,16 +67,26 @@ then
 fi
 
 echo "--------------------------------------------------------------------------------"
+echo "Installing python ..."
+echo "--------------------------------------------------------------------------------"
+apt-get install python
+apt-get install python3
+
+echo "--------------------------------------------------------------------------------"
 echo "Installing python-pip, python-dev, screen, python-wxgtk4.0, python-lxml ..."
 echo "--------------------------------------------------------------------------------"
 sleep 2
-apt-get -y install python-pip python-dev screen python-wxgtk4.0 python-lxml
+apt-get -y install python-pip
+apt-get -y install python-dev
+apt-get -y install screen
+apt-get -y install python-wxgtk4.0
+apt-get -y install python-lxml
 
 echo "--------------------------------------------------------------------------------"
 echo "Installing future, pyserial ..."
 echo "--------------------------------------------------------------------------------"
 sleep 2
-pip install future pyserial
+sudo -H pip install future pyserial
 
 echo "--------------------------------------------------------------------------------"
 echo "Installing OpenVPN ..."
@@ -92,16 +98,17 @@ echo "--------------------------------------------------------------------------
 echo "Installing pymavlink ..."
 echo "--------------------------------------------------------------------------------"
 sleep 2
-apt-get -y install libxml2-dev libxslt-dev
+apt-get -y install libxml2-dev
+apt-get -y install libxslt-dev
 apt-get -y install python3-pip
 apt install python3-serial
-pip3 install pymavlink
+sudo -H pip3 install pymavlink
 
 echo "--------------------------------------------------------------------------------"
 echo "Installing MAVProxy ..."
 echo "--------------------------------------------------------------------------------"
 sleep 2
-pip3 install MAVProxy
+sudo -H pip3 install MAVProxy
 
 echo "--------------------------------------------------------------------------------"
 echo "Installing Tkinter ..."
@@ -156,14 +163,11 @@ fi
 echo "--------------------------------------------------------------------------------"
 echo "Copying camera binary files ..."
 echo "--------------------------------------------------------------------------------"
-
-# Copy the camera binary files
 cd /home/$usr/Repos
 sleep 2
 cp Jetson_Nano_Binaries/gst-camera/gst-start-camera /usr/local/bin/
 cp Jetson_Nano_Binaries/gst-camera/libmeshflow.so /usr/lib/aarch64-linux-gnu/tegra/
 
-# Delete created repositories
 echo "Removing downloaded repositories..."
 echo "--------------------------------------------------------------------------------"
 sleep 2
