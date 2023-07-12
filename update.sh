@@ -79,7 +79,7 @@ sudo cp Jetson_Nano_Binaries/gst-camera/libmeshflow.so /usr/lib/aarch64-linux-gn
 # Generate the patch file
 echo "Generating patch file..."
 cd XOSS
-diff -Naur --exclude=.git --exclude=.gitignore --exclude=old --exclude=*.patch --exclude=update.sh --exclude=*.md old . > xoss.patch
+diff -Naur --exclude=.git --exclude=.gitignore --exclude=old --exclude=*.patch --exclude=update.sh --exclude=setup.sh --exclude=*.md old . > xoss.patch
 diff_exit_status=$?
 
 if [ $diff_exit_status -eq 1 ]
