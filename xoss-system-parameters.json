@@ -1,11 +1,11 @@
 {
-    "log_file" : "/home/xoss/Logs/vehicle.log",
-    "log_history_root" : "/home/xoss/Logs/History",
+    "log_file" : "/home/%u/Logs/vehicle.log",
+    "log_history_root" : "/home/%u/Logs/History",
 
     "network_watchdog_params" : {
-        "LOG_FILE"                          : "/home/xoss/Logs/nw.log",
+        "LOG_FILE"                          : "/home/%u/Logs/nw.log",
         "MODEM_WATCHDOG_ENABLED"            : true,
-        "WIFI_DEV_OPTIONS"                  : ["wlan0","wlan1","wlp0s20f3"],
+        "WIFI_DEV_OPTIONS"                  : ["wlan0","wlan1"],
         "LTE_MANUFACTURER_NAME"             : "U-Blox",
         "LTE_DEV_OPTIONS"                   : ["ttyACM0","ttyACM1","ttyACM2"],
         "VPN_ENABLED"                       : true,
@@ -43,7 +43,7 @@
     },
 
     "mavproxy_params" : {
-        "STATE_BASE_DIR"                    : "/home/xoss/Logs/",
+        "STATE_BASE_DIR"                    : "/home/%u/Logs/",
         "UART_DEVICE"                       : "/dev/ttyTHS1",
         "BAUDRATE"                          : "115200",
         "TCP_ADDRESS"                       : "0.0.0.0",
@@ -54,7 +54,7 @@
 
     "camera_params" : {
         "SETTINGS"                  : "/usr/local/bin/ecam24cunx.json",
-        "LOG_FILE"                  : "/home/xoss/Logs/camera.log",
+        "LOG_FILE"                  : "/home/%u/Logs/camera.log",
         "CAPTURE_DEV"               : "/dev/video0",
         "REC_DESTINATION_DEV"       : "/dev/mmcblk1p1",
         "REC_FOLDER_NAME"           : "xoss",
