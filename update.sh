@@ -2,6 +2,10 @@
 
 echo "Starting XOSS update script..."
 
+# Stop the main service
+sudo systemctl stop mavpylink.service
+sleep 3
+
 # Get the logged-in username
 usr=$(logname)
 
@@ -142,3 +146,7 @@ fi
 cd /home/$usr/Repos
 rm -d -rf Jetson_Nano_Binaries
 rm -d -rf XOSS
+
+# Start the main service
+sleep 3
+sudo systemctl start mavpylink.service
