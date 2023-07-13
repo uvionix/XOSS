@@ -61,7 +61,7 @@ fi
 echo "Fetching old XOSS files..."
 cd /home/$usr/Repos
 mkdir -p XOSS/old
-cp /usr/local/bin/ecam24cunx.json /usr/local/bin/xoss-system-parameters.json /usr/local/bin/xoss.py /usr/local/bin/modem-watchdog.sh /etc/systemd/system/mavpylink.service XOSS/old/
+cp /usr/local/bin/xoss.py /usr/local/bin/modem-watchdog.sh /etc/systemd/system/mavpylink.service XOSS/old/
 
 if [ ! $? -eq 0 ]
 then
@@ -79,7 +79,7 @@ sudo cp Jetson_Nano_Binaries/gst-camera/libmeshflow.so /usr/lib/aarch64-linux-gn
 # Generate the patch file
 echo "Generating patch file..."
 cd XOSS
-diff -Naur --exclude=.git --exclude=.gitignore --exclude=old --exclude=*.patch --exclude=update.sh --exclude=setup.sh --exclude=*.md old . > xoss.patch
+diff -Naur --exclude=.git --exclude=.gitignore --exclude=old --exclude=*.patch --exclude=*.json --exclude=update.sh --exclude=update_params.py --exclude=setup.sh --exclude=*.md old . > xoss.patch
 diff_exit_status=$?
 
 if [ $diff_exit_status -eq 1 ]
@@ -91,21 +91,51 @@ then
     patch --input=/home/$usr/Repos/XOSS/xoss.patch
 
     # Copy the patched files to their original locations
-    sudo cp ecam24cunx.json /usr/local/bin/
-    sudo cp xoss-system-parameters.json /usr/local/bin/
     sudo cp xoss.py /usr/local/bin/
     sudo cp modem-watchdog.sh /usr/local/bin/
     sudo cp mavpylink.service /etc/systemd/system/
     sudo systemctl daemon-reload
-
-    echo "Update successful!"
+    echo "Done"
 else
     if [ $diff_exit_status -eq 0 ]
     then
         echo "Files are identical. No patching needed!"
     else
         echo "Error generating patch file. Aborting!"
+        cd /home/$usr/Repos
+        rm -d -rf Jetson_Nano_Binaries
+        rm -d -rf XOSS
+        exit 1
     fi
+fi
+
+# Update parameters
+cd /home/$usr/Repos/XOSS
+cp /usr/local/bin/xoss-system-parameters.json old-xoss-system-parameters.json
+cp /usr/local/bin/ecam24cunx.json old-ecam24cunx.json
+
+echo "Updating system parameters..."
+./update_params.py old-xoss-system-parameters.json xoss-system-parameters.json
+
+if [ $? -eq 0 ]
+then
+    sed -i 's/%u/'"$usr"'/gi' xoss-system-parameters.json
+    sudo cp xoss-system-parameters.json /usr/local/bin/xoss-system-parameters.json
+    echo "Done"
+else
+    echo "Failed updating the system parameters!"
+fi
+
+echo "Updating camera parameters..."
+./update_params.py old-ecam24cunx.json ecam24cunx.json
+
+if [ $? -eq 0 ]
+then
+    sed -i 's/%u/'"$usr"'/gi' ecam24cunx.json
+    sudo cp ecam24cunx.json /usr/local/bin/ecam24cunx.json
+    echo "Done"
+else
+    echo "Failed updating the camera parameters!"
 fi
 
 # Remove the downloaded repositories
