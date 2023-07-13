@@ -12,6 +12,8 @@ echo "--------------------------------------------------------------------------
 # Copy the XOSS source files to their respective locations
 src_path=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 cd $src_path
+sed -i 's/%u/'"$usr"'/gi' xoss-system-parameters.json
+sed -i 's/%u/'"$usr"'/gi' ecam24cunx.json
 cp ecam24cunx.json /usr/local/bin/
 cp xoss-system-parameters.json /usr/local/bin/
 cp xoss.py /usr/local/bin/
