@@ -66,14 +66,27 @@ class Copter(mavpylink.Vehicle):
 
         # Initialize system clocks
         self.__init_system_clocks__()
-        
-        # TODO: Switch vehicle to RTL mode after a defined timeout when the RTL is started
 
-        self.__RTL_started = False
+        # Initialize the network failsafe system variables
+        try:
+            self.__network_failsafe_enabled = bool(self.__system_params["network_watchdog_params"]["NETWORK_FAILSAFE_ENABLED"])
+            self.__network_failsafe_mode_sequence = self.__system_params["network_watchdog_params"]["NETWORK_FAILSAFE_MODES_SEQUENCE"]
+        except:
+            self.__network_failsafe_enabled = False
+            self.__network_failsafe_mode_sequence = []
+
+        self.__network_failsafe_final_mode = None
+        try:
+            self.__network_failsafe_final_mode = str(self.__network_failsafe_mode_sequence[-2])
+        except:
+            pass
+
+        self.__network_failsafe_started = False
+        self.__stop_network_failsafe = threading.Event()
 
     # Initialize system clocks
     def __init_system_clocks__(self):
-        """  """
+        """ Sets up static max frequency to CPU, GPU and EMC clocks by invoking the command "jetson_clocks" """
 
         self.__log_message__(f"Setting up static max frequency to CPU, GPU and EMC clocks...")
         p = subprocess.Popen(["jetson_clocks"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -124,15 +137,47 @@ class Copter(mavpylink.Vehicle):
         self.__stop__()
 
     def __handle_network_disconnected__(self):
-        self.set_vehicle_mode(mode='LOITER')
-        if not self.__RTL_started:
-            self.__log_message__(f"{LOG_MESSAGES['MSG_STARTING_RTH']}")
-            self.__RTL_started = True
+        if (self.__network_failsafe_enabled) and \
+           (self.__network_failsafe_final_mode != None) and \
+           (self.get_vehicle_mode() != self.__network_failsafe_final_mode) and \
+           (not self.__network_failsafe_started):
+            self.__stop_network_failsafe.clear()
+            self.__t_network_failsafe = threading.Thread(target=self.__network_failsafe__,args=())
+            self.__t_network_failsafe.start()
 
     def __handle_network_reconnected__(self):
-        if self.__RTL_started:
-            self.__log_message__(f"{LOG_MESSAGES['MSG_RTH_STOPPING']}")
-            self.__RTL_started = False
+        if self.__network_failsafe_started:
+            self.__stop_network_failsafe.set()
+
+    def __network_failsafe__(self):
+        switch_seq = self.__network_failsafe_mode_sequence.copy()
+        sample_time = 5.0
+        
+        try:
+            switch_mode = str(switch_seq.pop(0))
+            switch_timeout = int(switch_seq.pop(0))
+            self.__log_message__("Starting network failsafe sequence...")
+            self.__network_failsafe_started = True
+        except:
+            return
+
+        while not self.__stop_network_failsafe.is_set():
+            if switch_timeout <= 0.0:
+                self.set_vehicle_mode(mode=switch_mode)
+
+                try:
+                    switch_mode = str(switch_seq.pop(0))
+                    switch_timeout = int(switch_seq.pop(0))
+                except:
+                    self.__log_message__("Network failsafe sequence completed")
+                    self.__network_failsafe_started = False
+                    break
+
+            sleep(sample_time)
+            switch_timeout -= sample_time
+        else:
+            self.__log_message__("Stopping network failsafe sequence...")
+            self.__network_failsafe_started = False
 
     def __handle_camera_rec_trigger_toggle__(self):
         if self.__camera.get_camera_recording():

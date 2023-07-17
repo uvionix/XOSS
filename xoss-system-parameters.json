@@ -17,6 +17,8 @@
         "SYNC_DATETIME_WAIT_TIMEOUT"        : 30.0,
         "WAIT_AFTER_NETWORK_ENABLE"         : 5.0,
         "SAMPLING_PERIOD"                   : 2.5,
+        "NETWORK_FAILSAFE_ENABLED"          : true,
+        "NETWORK_FAILSAFE_MODES_SEQUENCE"   : ["LOITER",30,"RTL",60],
 
         "modem_watchdog_params" : {
             "ENVIRONMENT_VARS"              : { "MODEM_NAME" : "U-Blox",
