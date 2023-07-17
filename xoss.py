@@ -176,7 +176,7 @@ class Copter(mavpylink.Vehicle):
             sleep(sample_time)
             switch_timeout -= sample_time
         else:
-            self.__log_message__("Stopping network failsafe sequence...")
+            self.__log_message__("Network failsafe sequence stopped")
             self.__network_failsafe_started = False
 
     def __handle_camera_rec_trigger_toggle__(self):
