@@ -46,7 +46,9 @@ class Copter(mavpylink.Vehicle):
             self.__cam_log_file = str(self.__system_params["camera_params"]["LOG_FILE"])
 
             # Create the logger object and add it to the loggers list of the base class
-            self.__cam_logger = Logger(name='CAMERA', log_file=self.__cam_log_file)
+            self.__cam_logger = Logger(name='CAMERA', log_file=self.__cam_log_file, \
+                                       http_logging=self.get_node_server_enabled(), \
+                                       http_log_port=self.get_node_server_log_msg_port())
             self.append_logger(logger=self.__cam_logger)
 
             # Create the camera object
