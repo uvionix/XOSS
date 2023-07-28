@@ -2,6 +2,14 @@
     "log_file" : "/home/%u/Logs/vehicle.log",
     "log_history_root" : "/home/%u/Logs/History",
 
+    "node_server" : {
+        "ENABLE"                            : true,
+        "HOST_IP"                           : "192.168.88.92",
+        "HOST_PORT"                         : 8000,
+        "SOCKET_PORT"                       : 8080,
+        "LOG_MSG_PORT"                      : 7001
+    },
+
     "network_watchdog_params" : {
         "LOG_FILE"                          : "/home/%u/Logs/nw.log",
         "MODEM_WATCHDOG_ENABLED"            : true,
