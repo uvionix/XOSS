@@ -119,16 +119,16 @@ sleep 2
 apt-get -y install python3-tk
 
 echo "--------------------------------------------------------------------------------"
-echo "Installing Node.js ..."
+echo "Installing Node.js, npm, express, body-parser, ws, ejs ..."
 echo "--------------------------------------------------------------------------------"
 sleep 2
-apt install nodejs
-apt install npm
+apt -y install nodejs
+apt -y install npm
 npm install -g npm@3.10.10
-npm install -g express
-npm install -g body-parser
-npm install -g ws
-npm install -g ejs
+npm install -g express --save
+npm install -g body-parser --save
+npm install -g ws --save
+npm install -g ejs --save
 
 echo "--------------------------------------------------------------------------------"
 echo "Installing libraries libtbb-dev and libatlas-base-dev ..."
