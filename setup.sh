@@ -118,11 +118,17 @@ echo "--------------------------------------------------------------------------
 sleep 2
 apt-get -y install python3-tk
 
-#echo "--------------------------------------------------------------------------------"
-#echo "Installing apache webserver ..."
-#echo "--------------------------------------------------------------------------------"
-#sleep 2
-#apt-get -y install apache2
+echo "--------------------------------------------------------------------------------"
+echo "Installing Node.js ..."
+echo "--------------------------------------------------------------------------------"
+sleep 2
+apt install nodejs
+apt install npm
+npm install -g npm@3.10.10
+npm install -g express
+npm install -g body-parser
+npm install -g ws
+npm install -g ejs
 
 echo "--------------------------------------------------------------------------------"
 echo "Installing libraries libtbb-dev and libatlas-base-dev ..."
