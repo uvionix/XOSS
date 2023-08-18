@@ -139,7 +139,9 @@ class Copter(mavpylink.Vehicle):
         self.__stop__()
 
     def __handle_network_disconnected__(self):
-        self.__camera.stop_streaming()
+        if self.__camera is not None:
+            self.__camera.stop_streaming()
+        
         if (self.__network_failsafe_enabled) and \
            (self.__network_failsafe_final_mode != None) and \
            (self.get_vehicle_mode() != self.__network_failsafe_final_mode) and \
@@ -183,16 +185,29 @@ class Copter(mavpylink.Vehicle):
             self.__network_failsafe_started = False
 
     def __handle_camera_rec_trigger_toggle__(self):
-        if self.__camera.get_camera_recording():
-            self.__camera.stop_recording()
-        else:
-            self.__camera.start_recording()
+        if self.__camera is not None:
+            if self.__camera.get_camera_recording():
+                self.__camera.stop_recording()
+            else:
+                self.__camera.start_recording()
 
     def __handle_mavproxy_peer_connected__(self):
-        self.__camera.start_streaming()
+        if (self.__camera is not None) and self.get_hmi_device_connected() and (not self.__camera.get_camera_started()):
+            self.__log_message__(f"{LOG_MESSAGES['MSG_CAMERA_STARTING']}")
+            self.__camera.start()
+
+            while not self.__camera.get_camera_started():
+                sleep(2.5)
+
+            # Wait for the camera to initialize
+            sleep(7.0)
+
+        if self.__camera is not None and self.__camera.get_camera_started():
+            self.__camera.start_streaming()
 
     def __handle_mavproxy_peer_disconnected__(self):
-        self.__camera.stop_streaming()
+        if self.__camera is not None and self.__camera.get_camera_started():
+            self.__camera.stop_streaming()
 
 # Start execution
 xoss = Copter()
