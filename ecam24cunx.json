@@ -1,6 +1,8 @@
 {
     "CAMERA_START_REC_HOTKEY"               : "r",
     "CAMERA_STOP_REC_HOTKEY"                : "s",
+    "CAMERA_START_STREAM_HOTKEY"            : "m",
+    "CAMERA_STOP_STREAM_HOTKEY"             : "n",
     "TOGGLE_VIDEO_STABILIZATION_HOTKEY"     : "b",
     "CAMERA_QUIT_SERVICE_HOTKEY"            : "q",
     "IN_PIX_FMT"                            : "UYVY",
@@ -13,7 +15,7 @@
     "STAB_MAX_MESH_POINT_VELOCITY_SCALE"    : "91",
     "STREAMING_ENABLED"                     : "0",
     "STREAM_QP_RANGE"                       : "35,35:35,35:-1,-1",
-    "STREAM_MTU"                            : "60000",
+    "STREAM_MTU"                            : "1400",
     "STREAM_RES_W"                          : "640",
     "STREAM_RES_H"                          : "480",
     "HOST_IP"                               : "192.168.88.91",
