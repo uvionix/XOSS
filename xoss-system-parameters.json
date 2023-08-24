@@ -68,6 +68,7 @@
         "CAPTURE_DEV"               : "/dev/video0",
         "REC_DESTINATION_DEV"       : "/dev/mmcblk1p1",
         "REC_FOLDER_NAME"           : "xoss",
+        "CAMERA_AUTOSTART"          : true,
         "CAM_READY_WAIT_TIMEOUT"    : 15.0,
         "SAMPLING_PERIOD"           : 2.5
     }

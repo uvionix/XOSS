@@ -69,6 +69,15 @@ class Copter(mavpylink.Vehicle):
         # Initialize system clocks
         self.__init_system_clocks__()
 
+        # Initialize the camera auto-start
+        try:
+            self.__camera_auto_start = bool(self.__system_params["camera_params"]["CAMERA_AUTOSTART"])
+        except:
+            self.__camera_auto_start = False
+
+        if not self.__camera_auto_start:
+            self.__log_message__(f"{LOG_MESSAGES['MSG_CAMERA_AUTOSTART_DISABLED']}")
+
         # Initialize the network failsafe system variables
         try:
             self.__network_failsafe_enabled = bool(self.__system_params["network_watchdog_params"]["NETWORK_FAILSAFE_ENABLED"])
@@ -115,7 +124,7 @@ class Copter(mavpylink.Vehicle):
             sleep(2.5)
 
         # Start the camera
-        if (self.__camera is not None) and (not self.get_hmi_device_connected()):
+        if (self.__camera is not None) and (not self.get_hmi_device_connected()) and self.__camera_auto_start:
             self.__log_message__(f"{LOG_MESSAGES['MSG_CAMERA_STARTING']}")
             self.__camera.start()
 
