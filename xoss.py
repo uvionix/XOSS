@@ -58,7 +58,7 @@ class Copter(mavpylink.Vehicle):
                                                             reboot_thread=self.__t_reboot)
 
             # Notify the base class that the vehicle has a camera
-            self.set_vehicle_has_camera()
+            self.set_vehicle_has_camera(camera_handle=self.__camera)
         except:
             self.__log_message__(f"{LOG_MESSAGES['MSG_ERR_ADDING_CAMERA']}. {LOG_MESSAGES['MSG_CAMERA_DISABLED']}")
             self.__camera = None
@@ -195,10 +195,14 @@ class Copter(mavpylink.Vehicle):
 
     def __handle_camera_rec_trigger_toggle__(self):
         if self.__camera is not None:
-            if self.__camera.get_camera_recording():
-                self.__camera.stop_recording()
+            if not self.__camera.get_camera_started():
+                self.__log_message__(f"{LOG_MESSAGES['MSG_CAMERA_STARTING']}")
+                self.__camera.start()
             else:
-                self.__camera.start_recording()
+                if self.__camera.get_camera_recording():
+                    self.__camera.stop_recording()
+                else:
+                    self.__camera.start_recording()
 
     def __handle_mavproxy_peer_connected__(self):
         if (self.__camera is not None) and self.get_hmi_device_connected() and (not self.__camera.get_camera_started()):

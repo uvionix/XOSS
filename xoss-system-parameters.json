@@ -63,13 +63,18 @@
     },
 
     "camera_params" : {
-        "SETTINGS"                  : "/usr/local/bin/ecam24cunx.json",
-        "LOG_FILE"                  : "/home/%u/Logs/camera.log",
-        "CAPTURE_DEV"               : "/dev/video0",
-        "REC_DESTINATION_DEV"       : "/dev/mmcblk1p1",
-        "REC_FOLDER_NAME"           : "xoss",
-        "CAMERA_AUTOSTART"          : true,
-        "CAM_READY_WAIT_TIMEOUT"    : 15.0,
-        "SAMPLING_PERIOD"           : 2.5
+        "VENDOR_NAME"                       : "e-con Systems",
+        "MODEL_NAME"                        : "e-CAM24-CUNX",
+        "SETTINGS"                          : "/usr/local/bin/ecam24cunx.json",
+        "LOG_FILE"                          : "/home/%u/Logs/camera.log",
+        "CAPTURE_DEV"                       : "/dev/video0",
+        "REC_DESTINATION_DEV"               : "/dev/mmcblk1p1",
+        "REC_FOLDER_NAME"                   : "xoss",
+        "CAMERA_AUTOSTART"                  : true,
+        "VIRTUAL_MAVLINK_INTERFACE_ENABLE"  : false,
+        "VIRTUAL_MAVLINK_INTERFACE_PORT"    : 6003,
+        "VIRTUAL_MAVLINK_INTERFACE_CAM_ID"  : 100,
+        "CAM_READY_WAIT_TIMEOUT"            : 15.0,
+        "SAMPLING_PERIOD"                   : 2.5
     }
 }
